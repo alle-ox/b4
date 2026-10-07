@@ -231,6 +231,7 @@ export const DevicesSettings = ({ config, onChange }: DevicesSettingsProps) => {
             <B4Switch
               label={t("settings.Devices.enable")}
               checked={enabled}
+              path="queue.devices.enabled"
               onChange={(checked) => onChange("queue.devices.enabled", checked)}
               description={
                 enabled || wisb ? undefined : t("settings.Devices.enableDesc")
@@ -239,12 +240,14 @@ export const DevicesSettings = ({ config, onChange }: DevicesSettingsProps) => {
             <B4Switch
               label={t("settings.Devices.invertSelection")}
               checked={wisb}
+              path="queue.devices.wisb"
               onChange={(checked) => onChange("queue.devices.wisb", checked)}
               disabled={!enabled}
             />
             <B4Switch
               label={t("settings.Devices.vendorLookup")}
               checked={vendorLookup}
+              path="queue.devices.vendor_lookup"
               onChange={(checked) =>
                 onChange("queue.devices.vendor_lookup", checked)
               }
