@@ -8,7 +8,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router";
 import { useSnackbar } from "@context/SnackbarProvider";
 
@@ -30,7 +31,6 @@ import { colors } from "@design";
 import { diffConfigLeaves } from "@utils";
 import {
   ChangedFieldsProvider,
-  useChangedFields,
 } from "@context/ChangedFieldsContext";
 import { useUnsavedChangesGuard } from "@hooks/useUnsavedChangesGuard";
 import {
@@ -239,7 +239,8 @@ export const SetEditorPage = ({
     },
     hasUnsavedChanges,
   );
-  const { snapshotLabels } = useChangedFields();
+  const labelsRef = useRef(new Map<string, ReactNode>());
+  const snapshotLabels = useCallback(() => new Map(labelsRef.current), []);
   const changeItems: UnsavedChangeItem[] = changedLeaves.map((leaf) => ({
     path: leaf.path,
     label: snapshotLabels().get(leaf.path) ?? leaf.path,
@@ -261,6 +262,7 @@ export const SetEditorPage = ({
     <ChangedFieldsProvider
       changedPaths={changedPaths}
       scope={`set:${editedSet.id}`}
+      registry={labelsRef}
     >
       {/* Header with tabs */}
       <Paper
